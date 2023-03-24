@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const { MONGO_URL } = process.env;
 
 const contactsRouter = require('./routes/api/contacts');
+const userRouter = require('./routes/api/user');
 const authRouter = require('./routes/api/auth');
 
 const app = express();
@@ -28,6 +29,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/users', authRouter);
+app.use('/api/users', userRouter);
 app.use('/api/contacts', contactsRouter);
 
 app.use('*', (req, res) => {
