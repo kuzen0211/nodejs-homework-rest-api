@@ -21,10 +21,14 @@ const userSchema = mongoose.Schema(
     { versionKey: false }
 );
 
-userSchema.methods.comparePassword = function (password) {
-    this.password = bcrypt.compareSync(password, this.password);
+userSchema.methods.setPassword = function (password) {
+    this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 };
 
-const User = mongoose.model('User', userSchema);
+userSchema.methods.comparePassword = function (password) {
+    return bcrypt.compareSync(password, this.password);
+};
+
+const User = mongoose.model('user', userSchema);
 
 module.exports = User;
