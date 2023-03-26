@@ -2,7 +2,7 @@ const { Types } = require('mongoose');
 const Contact = require('../models/contactModel');
 const { AppError } = require('../utils');
 
-const isVailidId = async (req, res, next) => {
+const isValidId = async (req, res, next) => {
     const { contactId } = req.params;
     const isCorrectedId = Types.ObjectId.isValid(contactId);
 
@@ -17,4 +17,4 @@ const isVailidId = async (req, res, next) => {
     next();
 };
 
-module.exports = isVailidId;
+module.exports = isValidId;

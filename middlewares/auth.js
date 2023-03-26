@@ -1,10 +1,9 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const User = require('../models/userModel');
 const { AppError } = require('../utils');
 const { SECRET_KEY } = process.env;
 
 const auth = async (req, res, next) => {
-    console.log('hello');
     const { authorization = '' } = req.headers;
     const [bearer, token] = authorization.split(' ');
 
@@ -15,16 +14,15 @@ const auth = async (req, res, next) => {
 
         const { id } = jwt.verify(token, SECRET_KEY);
         const user = await User.findById(id);
-        console.log(user);
 
-        if (!user) {
+        if (!user || !user.token) {
             return next(new AppError(401, 'Not authorized'));
         }
 
         req.user = user;
         next();
     } catch (error) {
-        if (error.message === 'Invalid sugnature') {
+        if (error.message === 'Invalid signature') {
             error.status = 401;
         }
         next(error);
