@@ -1,19 +1,20 @@
 const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
-const dotenv = require('dotenv');
+require('dotenv').config();
 const mongoose = require('mongoose');
+const { MONGO_URL } = process.env;
 
 const contactsRouter = require('./routes/api/contacts');
-
-dotenv.config('./.env');
+const userRouter = require('./routes/api/user');
+const authRouter = require('./routes/api/auth');
 
 const app = express();
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
 mongoose
-    .connect(process.env.MONGO_URL)
+    .connect(MONGO_URL)
     .then(con => {
         console.log('Database connection successful');
     })
@@ -27,6 +28,8 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/users', authRouter);
+app.use('/api/users', userRouter);
 app.use('/api/contacts', contactsRouter);
 
 app.use('*', (req, res) => {
