@@ -1,5 +1,5 @@
 const User = require('../../models/userModel');
-
+const gravatar = require('gravatar');
 const { AppError } = require('../../utils');
 
 const register = async (req, res, next) => {
@@ -11,7 +11,9 @@ const register = async (req, res, next) => {
             return next(new AppError(409, `User with ${email} already exist`));
         }
 
-        const newUser = new User({ name, email });
+        const avatarURL = gravatar.url(email);
+
+        const newUser = new User({ name, email, avatarURL });
 
         newUser.setPassword(password);
         newUser.save();
@@ -23,6 +25,7 @@ const register = async (req, res, next) => {
                 user: {
                     email,
                     password,
+                    avatarURL,
                 },
             },
         });
