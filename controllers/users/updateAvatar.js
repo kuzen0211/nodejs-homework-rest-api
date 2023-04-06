@@ -17,7 +17,7 @@ const updateAvatar = async (req, res, next) => {
     } catch (error) {
         await fs.unlink(tempUpload);
         res.status(401).json({
-            msg: 'Not authorized....',
+            msg: 'Not authorized',
         });
     }
 };

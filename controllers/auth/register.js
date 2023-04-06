@@ -1,10 +1,13 @@
 const User = require('../../models/userModel');
 const gravatar = require('gravatar');
 const { AppError } = require('../../utils');
+const { v4: uuidv4 } = require('uuid');
+const { sendEmail } = require('../../middlewares');
+const { BASE_URL } = process.env;
 
 const register = async (req, res, next) => {
     try {
-        const { name, email, password } = req.body;
+        const { email, password } = req.body;
         const user = await User.findOne({ email });
 
         if (user) {
@@ -13,7 +16,17 @@ const register = async (req, res, next) => {
 
         const avatarURL = gravatar.url(email);
 
-        const newUser = new User({ name, email, avatarURL });
+        const verificationCode = uuidv4();
+
+        const newUser = new User({ ...req.body, avatarURL, verificationCode });
+
+        const verifyEmail = {
+            to: email,
+            subject: 'Verify email',
+            html: `<a target='_blank' href='${BASE_URL}/api/users/verify/${verificationCode}'>Click verify email</a>`,
+        };
+
+        await sendEmail(verifyEmail);
 
         newUser.setPassword(password);
         newUser.save();

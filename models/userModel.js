@@ -23,6 +23,14 @@ const userSchema = mongoose.Schema(
             default: 'starter',
         },
         avatarURL: String,
+        verify: {
+            type: Boolean,
+            default: false,
+        },
+        verificationCode: {
+            type: String,
+            default: '',
+        },
         token: {
             type: String,
             default: null,
