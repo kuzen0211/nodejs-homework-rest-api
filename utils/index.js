@@ -1,10 +1,16 @@
 const AppError = require('./AppError');
-const { createContactValidator } = require('./contactValidator');
-const { updateContactValidator } = require('./contactValidator');
-const { updateFavoriteSchema } = require('./contactValidator');
-const { registerValidator } = require('./userValidator');
-const { loginValidator } = require('./userValidator');
-const { updateSubscriptionSchema } = require('./userValidator');
+const {
+    createContactValidator,
+    updateContactValidator,
+    updateFavoriteSchema,
+} = require('./contactValidator');
+
+const {
+    registerValidator,
+    loginValidator,
+    updateSubscriptionSchema,
+    emailValidator,
+} = require('./userValidator');
 
 module.exports = {
     AppError,
@@ -14,4 +20,5 @@ module.exports = {
     registerValidator,
     loginValidator,
     updateSubscriptionSchema,
+    emailValidator,
 };

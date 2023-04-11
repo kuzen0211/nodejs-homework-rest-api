@@ -15,3 +15,7 @@ exports.loginValidator = Joi.object({
 exports.updateSubscriptionSchema = Joi.object({
     subscription: Joi.string().valid('starter', 'pro', 'business').required(),
 });
+
+exports.emailValidator = Joi.object({
+    email: Joi.string().email().required(),
+});

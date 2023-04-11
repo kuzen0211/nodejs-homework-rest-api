@@ -14,6 +14,10 @@ const login = async (req, res, next) => {
             return next(new AppError(401, 'Email or password is wrong'));
         }
 
+        if (!user.verify) {
+            return next(new AppError(404, 'User not found'));
+        }
+
         const payload = {
             id: user._id,
         };
